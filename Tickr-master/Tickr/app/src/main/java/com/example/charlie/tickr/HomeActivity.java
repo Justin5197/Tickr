@@ -100,10 +100,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         //PIE CHART
 
 
-        PieChartView pieChart = (PieChartView) findViewById(R.id.chart);
-        PieChartData pieData;
 
-        List<SliceValue> values = new ArrayList<SliceValue>();
 
         DatabaseReference mDatabase2;
         mDatabase2 = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("portfolios");
@@ -125,6 +122,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     coinTotal = Float.valueOf(coinTotalSS);
                     Log.d("pieTAG", bankTotal+" "+stockTotal+" "+coinTotal);
 
+                PieChartView pieChart = (PieChartView) findViewById(R.id.chart);
+                PieChartData pieData;
+
+                List<SliceValue> values = new ArrayList<SliceValue>();
+                SliceValue bankSliceValue = new SliceValue((float) bankTotal, Color.rgb(237,37,78));
+                SliceValue stocksSliceValue = new SliceValue((float)stockTotal, Color.rgb(131,182,146));
+                SliceValue coinsSliceValue = new SliceValue((float)coinTotal, Color.rgb(108,190,237));
+                values.add(bankSliceValue);
+                values.add(stocksSliceValue);
+                values.add(coinsSliceValue);
+
+
+                pieData = new PieChartData(values);
+                pieData.setHasLabels(true);
+                pieData.setHasLabelsOnlyForSelected(false);
+                pieData.setHasLabelsOutside(false);
+                pieData.setHasCenterCircle(false);
+
+
+                pieChart.setPieChartData(pieData);
+                pieChart.setChartRotationEnabled(false);
             }
 
             @Override
@@ -132,26 +150,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+        Log.d("pieTAG2", bankTotal+" "+stockTotal+" "+coinTotal);
+
 
         float allTotals = bankTotal + stockTotal + coinTotal;
 
-        SliceValue bankSliceValue = new SliceValue((bankTotal* 30 + (int)bankTotal), Color.BLUE);
-        SliceValue stocksSliceValue = new SliceValue((stockTotal* 30 + (int)bankTotal), Color.RED);
-        SliceValue coinsSliceValue = new SliceValue((coinTotal* 30 + (int)bankTotal), Color.GREEN);
-        values.add(bankSliceValue);
-        values.add(stocksSliceValue);
-        values.add(coinsSliceValue);
+        float pleasework = (float)bankTotal;
+        Log.d("vslueTag",stockTotal+"");
 
-
-        pieData = new PieChartData(values);
-        pieData.setHasLabels(true);
-        pieData.setHasLabelsOnlyForSelected(false);
-        pieData.setHasLabelsOutside(false);
-        pieData.setHasCenterCircle(false);
-
-
-        pieChart.setPieChartData(pieData);
-        pieChart.setChartRotationEnabled(false);
     }
     @Override
     public void onClick(View v) {
